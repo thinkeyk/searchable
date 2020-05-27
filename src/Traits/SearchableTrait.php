@@ -188,12 +188,14 @@ trait SearchableTrait
             }
         }
 
-        if (!is_countable($relationship)) {
+        if (!is_countable($relationship) && $relationship != null) {
             return $relationship->{$column};
         }
 
-        return $relationship->pluck($column)->implode(', ');
-
+        if ($relationship != null){
+            return $relationship->pluck($column)->implode(', ');
+        }
+        return '';
     }
 
     /**
