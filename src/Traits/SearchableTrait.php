@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) ProVision Media Group Ltd. <https://provision.bg>. All Rights Reserved, 2019
  * Written by Venelin Iliev <venelin@provision.bg>
@@ -60,8 +61,8 @@ trait SearchableTrait
         /*
          * Set weight of fields
          */
-        $titleWeight = str_replace(',', '.', (float)config('searchable.weight.title', 1.5));
-        $contentWeight = str_replace(',', '.', (float)config('searchable.weight.content', 1.0));
+        $titleWeight = str_replace(',', '.', (float) config('searchable.weight.title', 1.5));
+        $contentWeight = str_replace(',', '.', (float) config('searchable.weight.content', 1.0));
 
         /*
          * Clean keywords
@@ -75,16 +76,16 @@ trait SearchableTrait
             foreach ($cleaners as $cleanerClass) {
                 $keywords = (new $cleanerClass($keywords, $searchMode))->clean();
             }
-
         }
 
         return $query->selectRaw(
             $this->getTable() . '.*, ' .
-            '(
+                '(
                 ' . $titleWeight . ' * (MATCH (' . config('searchable.table_name') . '.title) AGAINST (? ' . $searchMode . ')) +
                 ' . $contentWeight . ' * (MATCH (' . config('searchable.table_name') . '.title, ' . config('searchable.table_name') . '.content) AGAINST (? ' . $searchMode . '))
-                ) as ' . $this->searchableScoreKey
-            , [$keywords, $keywords])
+                ) as ' . $this->searchableScoreKey,
+            [$keywords, $keywords]
+        )
             ->leftJoin(config('searchable.table_name'), function (JoinClause $join) {
                 $join->on(config('searchable.table_name') . '.searchable_id', '=', $this->getTable() . '.id')
                     ->where(config('searchable.table_name') . '.searchable_type', '=', $this->getMorphClass());
@@ -145,7 +146,7 @@ trait SearchableTrait
      */
     protected function indexDataIsRelation($column): bool
     {
-        return (int)strpos($column, '.') > 0;
+        return (int) strpos($column, '.') > 0;
     }
 
     /**
@@ -177,7 +178,11 @@ trait SearchableTrait
 
             array_shift($remainingRelations);
 
-            $relationship = $relationship->{$relation};
+            try {
+                $relationship = $relationship->{$relation};
+            } catch (Exception $e) {
+                $e->getMessage();
+            }
 
             if (is_countable($relationship)) {
                 $values = collect();
@@ -192,7 +197,7 @@ trait SearchableTrait
             return $relationship->{$column};
         }
 
-        if ($relationship != null){
+        if ($relationship != null) {
             return $relationship->pluck($column)->implode(', ');
         }
         return '';
