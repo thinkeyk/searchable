@@ -2,6 +2,8 @@
 
 This package creates a MySQL fulltext index for models and enables you to search through those.
 
+Original Package is ProVisionBG/searchable. Made a couple of changed to allow null object to dont crash the application
+
 ## Requirements
 
 - Laravel >= 5.7
