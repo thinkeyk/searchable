@@ -1,5 +1,5 @@
 {
-  "name": "provision/searchable",
+  "name": "thinleyk/searchable",
   "type": "library",
   "description": "Searchable indexing with MySQL full text for Laravel",
   "keywords": [
