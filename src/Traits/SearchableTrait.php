@@ -89,12 +89,12 @@ trait SearchableTrait
 			[$keywords, $keywords]
 		)
 			->leftJoin(config('searchable.table_name'), function (JoinClause $join) {
-				$join->on(config('searchable.table_name') . '.searchable_id', '=', $this->getTable() . '.' . $this->getForeignKey())
+				$join->on(config('searchable.table_name') . '.searchable_id', '=', $this->getTable() . '.' . $this->primaryKey)
 					->where(config('searchable.table_name') . '.searchable_type', '=', $this->getMorphClass());
 			})
 			->whereRaw('MATCH(' . config('searchable.table_name') . '.title, ' . config('searchable.table_name') . '.content) AGAINST(? ' . $searchMode
 				. ')', [$keywords])
-			->groupBy($this->getTable() . '.' . $this->getForeignKey())
+			->groupBy($this->getTable() . '.' . $this->primaryKey)
 			->searchableOrder();
 	}
 
