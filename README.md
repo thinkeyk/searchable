@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ProVisionBG/searchable.svg?branch=master)](https://travis-ci.org/ProVisionBG/searchable)
+
 # Laravel MySQL fulltext search
 
 This package creates a MySQL fulltext index for models and enables you to search through those.
@@ -8,6 +10,17 @@ Original Package is ProVisionBG/searchable. Made a couple of changed to allow nu
 
 - Laravel >= 5.7
 - MySQL >= 5.6 / MariaDB >= 10.0.15
+
+#### Important! 
+
+In `config/database.php` set 
+```php
+'mysql' => [
+...
+    'strict' => false,
+...
+]
+```
 
 ## Install
 
@@ -28,7 +41,7 @@ Add the ``SearchableTrait`` trait to the model you want to have indexed and defi
 class Clients extends Model
 {
 
-    use \ProVision\Searchable\SearchableTrait;
+    use \ProVision\Searchable\Traits\SearchableTrait;
 
     /**
      * @inheritDoc
@@ -72,7 +85,7 @@ Listen for changes on relation and update parent model
 ```
 class Contact extends Model
 {
-    use SearchableRelationTrait;
+    use \ProVision\Searchable\Traits\SearchableRelationTrait;
 
      /**
      * @return MorphTo
@@ -113,6 +126,8 @@ Available modes
 - `NaturalLanguageWithQueryExpression` - IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION 
 - `Boolean` - IN BOOLEAN MODE
 - `QueryExpression` - WITH QUERY EXPANSION
+
+MySQL fulltext search documentation: https://dev.mysql.com/doc/refman/8.0/en/fulltext-search.html
 
 #### Search with relations & additional wheres
 
