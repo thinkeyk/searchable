@@ -1,5 +1,4 @@
 {
-
   "name": "provision/searchable",
   "type": "library",
   "description": "Searchable indexing with MySQL full text for Laravel",
@@ -50,3 +49,4 @@
       ]
     }
   }
+}
