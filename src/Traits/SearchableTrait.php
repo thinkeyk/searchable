@@ -188,7 +188,10 @@ trait SearchableTrait
 
 			array_shift($remainingRelations);
 
-			$relationship = $relationship->{$relation};
+			if ($relationship != null) {
+				$relationship = $relationship->{$relation};
+			}
+
 
 			if (is_countable($relationship)) {
 				$values = collect();
